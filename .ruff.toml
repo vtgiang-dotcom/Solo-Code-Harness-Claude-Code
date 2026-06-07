@@ -4,6 +4,8 @@ extend-exclude = [
     "agents-main",
     "awesome-agent-harness-main",
     "awesome-harness-engineering-main",
+    "awesome-deepseek-agent-main",
+    "claude-code-main",
     ".venv",
 ]
 
