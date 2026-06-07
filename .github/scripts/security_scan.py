@@ -71,6 +71,7 @@ SKIP_DIRS = {
     "claude-code-main",            # Reference project — official Claude Code repo
     "skills-main",                 # Reference project — official Anthropic skills
     "claw-code-main",              # Reference project — Claw Code autonomous agent
+    "claude-plugins-official-main",# Reference project — official plugin marketplace
 }
 # Files git-ignored in this repo — skip to avoid flagging local dev secrets
 SKIP_NAMES: set[str] = {".env"}
