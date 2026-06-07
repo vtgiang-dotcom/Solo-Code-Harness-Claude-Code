@@ -1,79 +1,80 @@
-# Solo-Code Harness — Claude Code + DeepSeek
+# Solo-Code Harness — Tối ưu Claude Code cho DeepSeek
 
-> **Mission:** Claude Code experience at DeepSeek price. A disciplined engineering harness that compensates for model gaps so you ship quality code at ~5-10x lower cost.
-> <sub>1 developer + Claude Code CLI + DeepSeek API + this harness = a team.</sub>
+> **Mục đích:** Biến DeepSeek thành Claude Code engineer đáng tin cậy. Harness này bù đắp mọi điểm yếu của DeepSeek — để Claude Code làm việc với DeepSeek tốt như với Claude Opus, với chi phí thấp hơn ~5-10x.
+> <sub>Claude Code CLI (giao diện) + DeepSeek API (engine) + Harness này (kỷ luật) = đội ngũ 1 người.</sub>
 
 <p align="center">
-  <b>Claude Code</b> (harness, skills, MCP) ───▶ <b>DeepSeek API</b> (thinking, coding)<br>
-  <sub>Experience of Claude • Price of DeepSeek</sub>
+  <b>Claude Code</b> ──▶ <b>Harness</b> (rules, skills, MCP, gates) ──▶ <b>DeepSeek API</b><br>
+  <sub>Dự án này KHÔNG phải harness tổng quát. Nó được thiết kế riêng để tối ưu Claude Code cho DeepSeek.</sub>
 </p>
 
 ---
 
-## Why This Exists
+## Vấn đề & Giải pháp
 
-**DeepSeek v4-pro is ~5-10x cheaper than Claude Opus, but weaker at:** instruction-following, hallucination resistance, and consistent code quality. The harness compensates for each gap.
+**DeepSeek rẻ hơn Claude Opus ~5-10x, nhưng yếu hơn rõ rệt.** Nếu dùng Claude Code với DeepSeek mà không có harness, bạn gặp: code ảo giác, style không nhất quán, văn phong AI, thiếu kỷ luật kỹ thuật. Harness này tồn tại để giải quyết từng vấn đề.
 
-| DeepSeek Weakness | Harness Compensation |
+| DeepSeek yếu ở đâu | Harness bù bằng gì |
 |---|---|
-| Higher hallucination rate — invents APIs, libraries, params | Anti-hallucination rules (A1-A5): verify before generating |
-| Unstable code quality — inconsistent patterns across calls | 10 structured skills with step-by-step protocols, not generic advice |
-| More AI-tell prose — "leverage", "paradigm shift", 40-word sentences | Prose quality rules (8-15) enforced in every output |
-| No built-in guardrails for destructive ops | 29 deny patterns in settings.json, guard.test.js 29/29 |
-| No commit discipline | Conventional commits enforced, `--no-verify` blocked |
+| **Ảo giác cao** — bịa thư viện, API, tham số không tồn tại | Anti-hallucination rules (A1-A5): verify trước khi generate |
+| **Code không ổn định** — pattern khác nhau mỗi lần gọi | 10 skills với protocol từng bước, không phải lời khuyên chung chung |
+| **Văn AI** — "leverage", "paradigm shift", câu 40 từ | Prose quality rules (8-15) enforced trong mọi output |
+| **Không guardrail** — sẵn sàng rm -rf, drop table | 29 deny patterns trong settings.json, guard.test.js 29/29 |
+| **Không kỷ luật commit** — message tùy tiện | Conventional commits, block `--no-verify` |
 
-> **Key insight:** With cheaper models, rules must be *longer and more explicit* — not shorter. CLAUDE.md at 251 lines is intentional compensation, not bloat.
+> **Nguyên tắc thiết kế:** Model càng rẻ → rule càng phải *dài và chi tiết*. CLAUDE.md 251 dòng không phải bloat — đó là compensation có chủ đích cho DeepSeek. Mỗi dòng là một lỗi DeepSeek từng mắc phải và đã được ngăn chặn.
 
 ---
 
-## Architecture
+## Cách nó hoạt động
 
 ```
-┌─────────────────┐     ┌──────────────────┐     ┌─────────────┐
-│  claudecode.ps1 │────▶│  Claude Code CLI  │────▶│  DeepSeek   │
-│  smart launcher │     │  + harness        │     │  API        │
-│                 │     │  + 10 skills      │     │  v4-pro     │
-│  model: auto    │     │  + 4 MCP servers  │     │  v4-flash   │
-└─────────────────┘     └──────────────────┘     └─────────────┘
-        │                        │                       │
-        │  ANTHROPIC_BASE_URL = api.deepseek.com/anthropic
-        │  ANTHROPIC_MODEL   = deepseek-v4-pro
-        │  ANTHROPIC_API_KEY = $DEEPSEEK_API_KEY
+┌──────────────────┐     ┌──────────────────────┐     ┌─────────────┐
+│  claudecode.ps1  │────▶│  Claude Code CLI      │────▶│  DeepSeek   │
+│  Smart launcher  │     │  + CLAUDE.md (rules)  │     │  API        │
+│  Auto model pick │     │  + 10 skills          │     │  v4-pro     │
+│  flash vs pro    │     │  + 4 MCP servers      │     │  v4-flash   │
+└──────────────────┘     └──────────────────────┘     └─────────────┘
+        │                         │                         │
+        │  ANTHROPIC_BASE_URL  = https://api.deepseek.com/anthropic
+        │  ANTHROPIC_MODEL     = deepseek-v4-pro
+        │  ANTHROPIC_API_KEY   = $DEEPSEEK_API_KEY (từ .env)
         │
-        │  Claude Code thinks it talks to Anthropic.
-        │  DeepSeek responds in Anthropic-compatible format.
-        │  Cost: ~$0.3/M tokens vs Claude's ~$3/M.
+        │  Claude Code nghĩ nó đang nói chuyện với Anthropic.
+        │  DeepSeek phản hồi đúng format Anthropic.
+        │  Harness chặn mọi thói xấu của DeepSeek trước khi đến tay bạn.
+        │  Chi phí: ~$0.3/M tokens thay vì ~$3/M của Claude.
 ```
 
-### Smart Launcher — Auto Model Selection
+### Smart Launcher — Tự động chọn model DeepSeek
 
-`claudecode.ps1` scans your prompt for 20 complexity keywords. Complex tasks get `v4-pro`; quick reads get `v4-flash`. No manual switching.
+`claudecode.ps1` quét prompt của bạn với 20 keyword. Task phức tạp → `v4-pro`; đọc file, hỏi nhanh → `v4-flash`. Không cần chuyển thủ công.
 
 ```
-.\claudecode.ps1                  # pro default — best quality
-.\claudecode.ps1 -Model flash     # flash — read-only, simple Q&A
-.\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
-.\claudecode-pro.ps1              # pro shortcut
+.\claudecode.ps1                  # pro mặc định — chất lượng tốt nhất
+.\claudecode.ps1 -Model flash     # flash — đọc file, hỏi đáp đơn giản
+.\claudecode.ps1 -p "refactor X"  # auto-detect từ nội dung prompt
+.\claudecode-pro.ps1              # shortcut pro
 ```
 
-| Trigger keywords → pro | Everything else → flash |
+| Keyword → pro | Còn lại → flash |
 |---|---|
-| refactor, debug, bug, build, create, analyze, audit, architect, design, migrate, implement, security, optimize, fix, error, crash, restructure, review | Read files, explain code, search, ask questions |
+| refactor, debug, bug, build, create, analyze, audit, architect, design, migrate, implement, security, optimize, fix, error, crash, restructure, review | Đọc file, giải thích code, tìm kiếm, hỏi đáp |
 
 ---
 
-## Philosophy
+## Triết lý thiết kế
 
-**Solo development with AI is about discipline, not speed.** Without guardrails, AI agents cut corners. This harness enforces the process:
+**Claude Code là giao diện tốt nhất. DeepSeek là engine rẻ nhất. Nhưng ghép chúng với nhau cần một lớp trung gian.** Harness này là lớp đó — nó ép DeepSeek tuân thủ kỷ luật mà Claude Code đòi hỏi.
 
-| Principle | Without | With | Mechanism |
-|-----------|:---:|:---:|-----------|
-| Plan before code | Occasional | **Always** | CLAUDE.md rulebook |
-| Ask before destructive ops | Rare | **Always** | settings.json deny rules |
-| Read before edit | Sometimes | **Always** | CLAUDE.md rulebook |
-| Scan secrets before commit | Rare | **Always** | security_scan.py |
-| Prose quality (no AI-tells) | Drifts | **Guided** | CLAUDE.md prose rules |
-| Cost-optimized model routing | Manual | **Auto** | claudecode.ps1 smart detect |
+| Kỷ luật | Không có harness | Có harness | Cơ chế |
+|---------|:---:|:---:|--------|
+| Lên kế hoạch trước khi code | Thỉnh thoảng | **Luôn luôn** | CLAUDE.md rulebook |
+| Hỏi trước thao tác destructive | Hiếm | **Luôn luôn** | settings.json deny rules |
+| Đọc file trước khi sửa | Đôi khi | **Luôn luôn** | CLAUDE.md rulebook |
+| Quét secrets trước commit | Hiếm | **Luôn luôn** | security_scan.py |
+| Văn phong không AI-tell | Bị trôi | **Kiểm soát** | CLAUDE.md prose rules |
+| Chọn model theo task | Thủ công | **Tự động** | claudecode.ps1 smart detect |
 
 ---
 
