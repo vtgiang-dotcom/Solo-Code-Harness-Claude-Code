@@ -80,21 +80,59 @@
 
 ## Quick Start
 
+### New project (empty directory)
+
 ```bash
-git clone https://github.com/vtgiang-dotcom/Solo-Code-Harness-Claude-Code.git
-cd Solo-Code-Harness-Claude-Code
+# Clone harness as template
+git clone https://github.com/vtgiang-dotcom/Solo-Code-Harness-Claude-Code.git my-project
+cd my-project
+
+# Remove harness self-tests and docs — keep the harness layer only
+rm -rf .git tools/ README.md
+git init
+git add -A && git commit -m "init: Solo-Code Harness + DeepSeek"
 
 # Create .env with your DeepSeek API key
 echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
 
-# Smart launcher — auto-detect flash vs pro
+# Ready
 .\claudecode.ps1
-
-# Force model
-.\claudecode.ps1 -Model pro     # DeepSeek v4 Pro
-.\claudecode.ps1 -Model flash   # DeepSeek v4 Flash
-.\claudecode-pro.ps1            # Pro shortcut
 ```
+
+### Existing project (add harness to current codebase)
+
+```bash
+# Clone harness to temp, copy harness layer only
+git clone https://github.com/vtgiang-dotcom/Solo-Code-Harness-Claude-Code.git /tmp/harness
+cp -r /tmp/harness/.claude /tmp/harness/.mcp.json \
+      /tmp/harness/claudecode*.ps1 /tmp/harness/.github \
+      /tmp/harness/.ruff.toml /tmp/harness/Makefile .
+rm -rf /tmp/harness
+echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
+
+# Or use the deploy script (dry-run first)
+python tools/deploy.py . --dry-run
+python tools/deploy.py .
+```
+
+### Force model
+
+```bash
+.\claudecode.ps1                  # pro default — best quality
+.\claudecode.ps1 -Model flash     # flash — read files, simple Q&A
+.\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
+.\claudecode-pro.ps1              # pro shortcut
+```
+
+### What gets deployed
+
+| Copied | Not copied |
+|--------|-----------|
+| `.claude/` (rules, skills, memory) | `tools/` (harness self-tests) |
+| `.mcp.json` (4 MCP servers) | `README.md` |
+| `claudecode.ps1` (smart launcher) | `.git/` |
+| `.github/` (security gates) | `.env` (create your own) |
+| `.ruff.toml`, `Makefile` | |
 
 ---
 
