@@ -45,9 +45,9 @@
         │  The harness intercepts every bad habit before it reaches you.
         │
         │  Pricing (per 1M tokens):
-        │    pro:   $0.435 input / $0.87 output / $0.0036 cache hit
+        │    pro:   $0.435 input / $0.87 output / $0.003625 cache hit
         │    flash: $0.14 input  / $0.28 output / $0.0028 cache hit
-        │  Harness maximizes cache hits → most requests at ~$0.003/M
+        │  Harness maximizes cache hits → most input at ~$0.003/M
         │  Cost: ~$0.3/M tokens vs Claude's ~$3/M.
 ```
 

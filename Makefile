@@ -15,6 +15,7 @@ help:
 	@echo "  make test-integration   Run integration tests"
 	@echo "  make check              Full gate: ruff + garden + test + integration"
 	@echo "  make deploy TARGET=..   Deploy harness to another project"
+	@echo "  make cost               Estimate session costs from usage.log"
 	@echo ""
 	@echo "Security:"
 	@echo "  make security-scan      Scan for hardcoded secrets"
@@ -52,3 +53,6 @@ gitleaks:
 
 deploy:
 	$(PY) tools/deploy.py $(TARGET)
+
+cost:
+	$(PY) tools/cost.py $(ARGS)
