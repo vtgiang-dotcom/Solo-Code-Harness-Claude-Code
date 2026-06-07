@@ -139,10 +139,18 @@ python tools/setup-global-config.py
 ### Force model
 
 ```bash
+# Windows (PowerShell)
 .\claudecode.ps1                  # pro[1m] default — best quality
 .\claudecode.ps1 -Model flash     # flash[1m] — read files, simple Q&A
 .\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
 .\claudecode-pro.ps1              # pro shortcut
+
+# Linux / Mac (bash)
+chmod +x claudecode.sh claudecode-pro.sh
+./claudecode.sh                   # pro[1m] default — best quality
+./claudecode.sh -Model flash      # flash[1m] — read files, simple Q&A
+./claudecode.sh -p "refactor X"   # auto-detect from prompt text
+./claudecode-pro.sh               # pro shortcut
 ```
 
 ### What gets deployed
