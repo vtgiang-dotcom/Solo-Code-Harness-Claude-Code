@@ -45,6 +45,37 @@ WARN_PATTERNS = [
     (r"print\(.*\)\s*#.*debug", "Debug print detected — remove before committing"),
 ]
 
+# Path validation patterns
+PATH_WARN = [
+    (r"\b/tmp/", "Writing to /tmp — data lost on reboot. Use persistent path."),
+    (r"\b~/", "Tilde ~ in script — may not expand as expected. Use $HOME."),
+    (r"(?<!\w)\.\.\/\.\.\/",
+     "Deep relative path — fragile. Use absolute or project-relative."),
+]
+
+# Mode/permission validation patterns
+MODE_WARN = [
+    (r"chmod\s+.*777", "chmod 777 — world-writable. Use 755 or 644 instead."),
+    (r"chmod\s+.*\+x\s+(?!.*\.sh)", "chmod +x on non-script file — verify intent."),
+    (r"chown\s+.*:.*", "chown in script — may require sudo. Verify ownership intent."),
+]
+
+# Sed/syntax validation patterns
+SED_WARN = [
+    (r"sed\s+.*\|.*sed", "Piped sed commands — fragile. Use single sed with -e."),
+    (r"sed\s+-i\s+(?!.*\.bak)", "sed -i without .bak — no backup. Use sed -i.bak."),
+    (r"grep\s+(?:(?!!).)*$", "grep without --line-buffered in pipe — output delayed."),
+]
+
+# Command semantics validation
+SEMANTIC_WARN = [
+    (r"kill\s+-9", "kill -9 is SIGKILL — no cleanup. Try kill -15 first."),
+    (r"docker\s+rm\s+-f", "docker rm -f — force remove. May orphan resources."),
+    (r"npm\s+audit\s+fix\s+--force",
+     "npm audit fix --force — may break deps. Review first."),
+    (r"git\s+stash\s+drop", "git stash drop — irreversible. Use git stash pop first."),
+]
+
 
 def main():
     try:
@@ -70,7 +101,31 @@ def main():
     for pattern, message in WARN_PATTERNS:
         if re.search(pattern, command, re.IGNORECASE):
             print(f"WARNING: {message}", file=sys.stderr)
-            break  # Only show first warning
+            break
+
+    # Check path validation
+    for pattern, message in PATH_WARN:
+        if re.search(pattern, command):
+            print(f"PATH: {message}", file=sys.stderr)
+            break
+
+    # Check mode/permission validation
+    for pattern, message in MODE_WARN:
+        if re.search(pattern, command):
+            print(f"MODE: {message}", file=sys.stderr)
+            break
+
+    # Check sed/syntax validation
+    for pattern, message in SED_WARN:
+        if re.search(pattern, command):
+            print(f"SED: {message}", file=sys.stderr)
+            break
+
+    # Check command semantics
+    for pattern, message in SEMANTIC_WARN:
+        if re.search(pattern, command, re.IGNORECASE):
+            print(f"SEMANTIC: {message}", file=sys.stderr)
+            break
 
     sys.exit(0)
 

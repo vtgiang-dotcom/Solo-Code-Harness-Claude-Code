@@ -78,6 +78,19 @@ Pull back from line-level concerns. Focus:
 
 End with: `Architecturally sound | needs trim | re-think before merging`.
 
+#### Angle 5: ANTI-SLOP (DeepSeek-specific)
+
+DeepSeek is prone to generating plausible-looking but wrong code. Check:
+1. **Hallucinated APIs** — functions, methods, or imports that don't exist in the installed version
+2. **Self-referential comments** — "This function is used by X flow" without explaining WHY
+3. **Restated-code comments** — comments that paraphrase what the code does rather than explaining intent
+4. **Over-confident fixes** — changes that look correct but miss edge cases DeepSeek didn't think about
+5. **Inconsistent patterns** — different approaches to the same problem in the same PR
+6. **Unverifiable claims** — comments claiming "this is more efficient" without benchmarks
+7. **Broad mechanical changes** — large diffs that rename/reformat without functional purpose
+
+Classification: if a finding matches any slop pattern, flag it as `slop:` instead of `nit:`.
+
 ### Review Workflow
 
 **Step 1 – Context Gathering**
