@@ -43,6 +43,11 @@
         │  Claude Code thinks it's talking to Anthropic.
         │  DeepSeek responds in Anthropic-compatible format.
         │  The harness intercepts every bad habit before it reaches you.
+        │
+        │  Pricing (per 1M tokens):
+        │    pro:   $0.435 input / $0.87 output / $0.0036 cache hit
+        │    flash: $0.14 input  / $0.28 output / $0.0028 cache hit
+        │  Harness maximizes cache hits → most requests at ~$0.003/M
         │  Cost: ~$0.3/M tokens vs Claude's ~$3/M.
 ```
 
@@ -75,6 +80,9 @@
 | Scan secrets before commit | Rarely | **Always** | security_scan.py |
 | No AI-tell prose | Drifts | **Controlled** | CLAUDE.md prose rules |
 | Task-appropriate model | Manual | **Automatic** | claudecode.ps1 smart detect |
+| Cache-optimized prompts | No | **Designed-in** | Stable CLAUDE.md = max cache hits |
+
+> **Cache economics:** DeepSeek charges ~$0.003/M tokens for cache hits (vs $0.435/M for uncached input). The harness's long, stable system prompt is a feature, not a bug — every cached token saves ~99% in input cost. A 251-line CLAUDE.md that hits cache costs less than a 50-line one that misses.
 
 ---
 
@@ -115,11 +123,24 @@ python tools/deploy.py . --dry-run
 python tools/deploy.py .
 ```
 
+### VSCode Extension (alternative to CLI)
+
+```bash
+# 1. Install Claude Code VSCode Extension
+#    https://marketplace.visualstudio.com/items?itemName=anthropic.claude-code
+
+# 2. Disable login prompt (required for DeepSeek)
+#    VSCode Settings → search "claudeCode.disableLoginPrompt" → enable
+
+# 3. Generate global config so VSCode Extension reads DeepSeek settings
+python tools/setup-global-config.py
+```
+
 ### Force model
 
 ```bash
-.\claudecode.ps1                  # pro default — best quality
-.\claudecode.ps1 -Model flash     # flash — read files, simple Q&A
+.\claudecode.ps1                  # pro[1m] default — best quality
+.\claudecode.ps1 -Model flash     # flash[1m] — read files, simple Q&A
 .\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
 .\claudecode-pro.ps1              # pro shortcut
 ```
