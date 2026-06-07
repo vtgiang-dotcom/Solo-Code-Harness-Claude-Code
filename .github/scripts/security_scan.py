@@ -72,6 +72,9 @@ SKIP_DIRS = {
     "skills-main",                 # Reference project — official Anthropic skills
     "claw-code-main",              # Reference project — Claw Code autonomous agent
     "claude-plugins-official-main",# Reference project — official plugin marketplace
+    "skills-main-2",               # Reference project — Microsoft Azure skills
+    "gemini-skills-main",          # Reference project — Gemini skills
+    "code",                        # Reference project root — all external code
 }
 # Files git-ignored in this repo — skip to avoid flagging local dev secrets
 SKIP_NAMES: set[str] = {".env"}

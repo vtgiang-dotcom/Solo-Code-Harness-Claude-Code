@@ -30,6 +30,9 @@ Thumbs.db
 # Telemetry
 .claude/usage.log
 
+# Reference code (external projects for research only)
+code/
+
 # Temp
 *.bak
 *.tmp

@@ -1,6 +1,30 @@
 {
   "description": "Solo-Code hooks — real-time enforcement for DeepSeek via Claude Code",
   "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/continual-learning.py\" sessionStart",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/continual-learning.py\" sessionEnd",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "matcher": "Bash",
@@ -16,6 +40,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/security-check.py\" preEdit",
+            "timeout": 5
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/validate_file.py\""
           }
         ]
@@ -27,7 +56,30 @@
         "hooks": [
           {
             "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/continual-learning.py\" postToolUse",
+            "timeout": 5
+          },
+          {
+            "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/check_output.py\""
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/security-check.py\" postCommit",
+            "if": "Bash(git commit:*)",
+            "timeout": 30,
+            "asyncRewake": true,
+            "rewakeMessage": "Background security scan of commit — address or acknowledge findings below, then continue with the user's original request:",
+            "rewakeSummary": "Commit security scan found issues"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR}/.claude/hooks/security-check.py\" postPush",
+            "if": "Bash(git push:*)",
+            "timeout": 30,
+            "asyncRewake": true,
+            "rewakeMessage": "Background security scan of pushed commits — address or acknowledge findings below, then continue with the user's original request:",
+            "rewakeSummary": "Push security scan found issues"
           }
         ]
       }

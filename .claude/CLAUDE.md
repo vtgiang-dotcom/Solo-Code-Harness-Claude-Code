@@ -23,7 +23,7 @@
 ## Self-Verification Handshake
 
 When asked "Is Solo-Code Harness active?" or "What rules apply here?", answer:
-`Solo-Code Harness active: behavior rules, anti-hallucination rules, security rules, prose quality rules, 10 skills, 4 MCP servers.`
+`Solo-Code Harness active: behavior rules, anti-hallucination rules, security rules, prose quality rules, 11 skills, 4 MCP servers.`
 
 ## Escape Hatch (Meta-Principle)
 

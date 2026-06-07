@@ -13,7 +13,7 @@ import sys
 
 # Patterns that should be BLOCKED (exit code 2)
 BLOCK_PATTERNS = [
-    (r"rm\s+-rf\s+/", "rm -rf / — absolute path deletion blocked"),
+    (r"rm\s+-rf\s+/(?:\s|$|\*|\"|')", "rm -rf / — root directory deletion blocked"),
     (r"rm\s+-rf\s+~", "rm -rf ~ — home directory deletion blocked"),
     (r"rm\s+-rf\s+\*", "rm -rf * — wildcard deletion blocked"),
     (r"git\s+push\s+.*(--force|-f)\s+.*(main|master)",
@@ -76,6 +76,49 @@ SEMANTIC_WARN = [
     (r"git\s+stash\s+drop", "git stash drop — irreversible. Use git stash pop first."),
 ]
 
+# Read-only mode validation — detect mutation commands (for read-only enforcement)
+MUTATION_PATTERNS = [
+    (r"\brm\b", "rm — file deletion (mutation)"),
+    (r"\bmv\b", "mv — file move/rename (mutation)"),
+    (r"\bcp\b(?!.*\.bak)", "cp — file copy (may overwrite)"),
+    (r">\s*\S", "Output redirect > (overwrites file)"),
+    (r">>\s*\S", "Output redirect >> (appends to file)"),
+    (r"\btee\b", "tee — writes to file"),
+    (r"\bdd\b", "dd — raw device write"),
+    (r"\bmkdir\b", "mkdir — creates directory"),
+    (r"\btouch\b", "touch — creates/modifies file timestamp"),
+    (r"\bchmod\b", "chmod — permission change"),
+    (r"\bchown\b", "chown — ownership change"),
+    (r"\bnpm\s+install\b", "npm install — modifies node_modules/package.json"),
+    (r"\bpip\s+install\b", "pip install — modifies Python packages"),
+    (r"\bgit\s+commit\b", "git commit — creates a commit"),
+    (r"\bgit\s+push\b", "git push — pushes to remote"),
+    (r"\bdocker\s+(build|push|tag|rmi)", "docker build/push/tag/rmi — modifies images"),
+]
+
+# Piped destructive commands — harder to detect, higher risk
+PIPE_DESTRUCTIVE = [
+    (r"xargs\s+rm", "xargs rm — batch deletion via pipe. Review what xargs receives."),
+    (r"find\s+.*-delete", "find -delete — direct deletion. Use -print first to preview."),
+    (r"find\s+.*-exec\s+rm", "find -exec rm — deletion via find. Use -print first to preview."),
+    (r"git\s+branch\s+.*\|.*xargs.*git\s+branch\s+-D",
+     "Batch branch deletion — verify which branches will be deleted first."),
+    (r"docker\s+ps\s+.*\|.*xargs.*docker\s+rm",
+     "Batch container removal — verify which containers first."),
+    (r"kubectl\s+delete\s+.*--all", "kubectl delete --all — deletes all resources in namespace."),
+]
+
+# Safer alternatives to common destructive commands
+REVERSIBLE_ALTERNATIVES = {
+    "rm": "Use `mv` to ~/.Trash/ or add .bak suffix before deleting.",
+    "rm -rf": "Use `mv <path> /tmp/<name>-backup` first, then rm after verifying.",
+    "git reset --hard": "Use `git stash` + `git reset --soft` to preserve changes.",
+    "git push --force": "Use `git push --force-with-lease` to avoid overwriting others' work.",
+    "git branch -D": "Use `git branch -d` (lowercase) — only deletes merged branches.",
+    "docker rm -f": "Use `docker stop` first, then `docker rm`.",
+    "kill -9": "Use `kill -15` (SIGTERM) first — gives process time to clean up.",
+}
+
 
 def main():
     try:
@@ -125,6 +168,24 @@ def main():
     for pattern, message in SEMANTIC_WARN:
         if re.search(pattern, command, re.IGNORECASE):
             print(f"SEMANTIC: {message}", file=sys.stderr)
+            break
+
+    # Check piped destructive commands
+    for pattern, message in PIPE_DESTRUCTIVE:
+        if re.search(pattern, command, re.IGNORECASE):
+            print(f"DESTRUCTIVE_PIPE: {message}", file=sys.stderr)
+            break
+
+    # Check for mutation commands (read-only enforcement)
+    for pattern, message in MUTATION_PATTERNS:
+        if re.search(pattern, command, re.IGNORECASE):
+            print(f"MUTATION: {message}", file=sys.stderr)
+            break
+
+    # Suggest reversible alternatives for detected destructive commands
+    for destructive_cmd, alternative in REVERSIBLE_ALTERNATIVES.items():
+        if destructive_cmd in command:
+            print(f"SAFE_ALT: {alternative}", file=sys.stderr)
             break
 
     sys.exit(0)

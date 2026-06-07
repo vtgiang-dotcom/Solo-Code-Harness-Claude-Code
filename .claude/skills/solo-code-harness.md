@@ -59,6 +59,7 @@ Claude Code auto-discovers `.claude/CLAUDE.md` and `.claude/settings.json` at re
 | `permission-guard` | Read, AskUserQuestion | rm, delete, credentials, config |
 | `block-no-verify` | Bash, Read | `git commit --no-verify` |
 | `solo-code-harness` | Read, Edit, Bash, Agent, Skill | Harness setup, deploy |
+| `claude-api` | Read, WebFetch, Grep, Glob | Anthropic SDK, Claude API, model migration |
 
 ---
 
