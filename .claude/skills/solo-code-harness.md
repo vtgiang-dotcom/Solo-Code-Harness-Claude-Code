@@ -1,6 +1,6 @@
 ---
 name: solo-code-harness
-description: "Deploy, configure, and maintain the Solo-Code Claude Code harness. Use when: deploy harness, setup claude, configure AI agents, install AI harness, solo-code setup, initialize project."
+description: "Deploy, configure, and maintain the Solo-Code Harness for DeepSeek + Claude Code. Use whenever setting up a new project with AI, deploying the harness, configuring Claude Code, adding skills/hooks/rules, or troubleshooting harness issues. Trigger on: deploy harness, setup claude, configure AI, install harness, solo-code, add skill, add hook, add rule, harness not working, verification gates."
 license: MIT
 allowed-tools: "Read, Edit, Bash, Agent, Skill"
 ---

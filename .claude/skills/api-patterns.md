@@ -1,6 +1,6 @@
 ---
 name: api-patterns
-description: "Design APIs, choose between REST/GraphQL/tRPC, and review API architecture. Use when: API design, REST, GraphQL, tRPC, endpoint, API architecture, api."
+description: "Design APIs, choose between REST/GraphQL/tRPC, review API architecture. Use whenever the user mentions API design, endpoint, route, REST, GraphQL, tRPC, HTTP, webhook, OpenAPI, Swagger, API versioning, or wants to create, review, or refactor any API surface. Trigger even if the user doesn't explicitly say 'API' — any discussion of endpoints, routes, or data contracts should use this."
 license: MIT
 allowed-tools: "Read, Grep, Glob"
 ---

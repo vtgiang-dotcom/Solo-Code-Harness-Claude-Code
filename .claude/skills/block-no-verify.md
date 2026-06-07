@@ -1,6 +1,6 @@
 ---
 name: block-no-verify
-description: "Prevent commits that skip pre-commit hooks (--no-verify, -n). Auto-loads when git commit with bypass flags is attempted. Triggers: commit --no-verify, git commit -n, git push --no-verify."
+description: "Block commits that skip pre-commit hooks (--no-verify, -n). Auto-triggers on: git commit --no-verify, git commit -n, git push --no-verify, git am --no-verify. Use whenever git operations with bypass flags are detected. Enforces security scan + lint + tests before every commit."
 license: MIT
 allowed-tools: "Bash, Read"
 ---

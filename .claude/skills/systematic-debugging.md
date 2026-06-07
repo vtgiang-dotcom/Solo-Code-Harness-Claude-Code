@@ -9,6 +9,31 @@ allowed-tools: "Read, Grep, Glob, Bash"
 
 Random fixes waste time and create new bugs. Quick patches mask underlying issues.
 
+## Decision Tree: Which Phase Are You In?
+
+```
+User reports an issue →
+├── Error message with stack trace?
+│   ├── Yes → Phase 1: Read errors, reproduce, check recent changes
+│   │         Then → Phase 2: Find working examples, compare
+│   └── No → Gather more data: add logging, ask for exact steps
+│
+├── Can reproduce consistently?
+│   ├── Yes → Phase 3: Form hypothesis, test minimally
+│   │         Worked? → Phase 4: Create test, fix, verify
+│   │         Failed? → New hypothesis (if <3 attempts: back to Phase 1)
+│   │         Failed 3+ times? → Question the architecture
+│   └── No → Phase 1: Add diagnostic logging at each boundary
+│             Run once → which component fails? Trace data flow up
+│
+├── Working example exists in codebase?
+│   ├── Yes → Phase 2: Compare against reference, list all differences
+│   └── No → Search for similar patterns in adjacent code
+│
+└── Fix applied but new problems appear?
+    └── STOP. Architectural issue. Don't keep patching.
+```
+
 ## The Iron Law
 
 **NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** If you haven't completed Phase 1, you cannot propose fixes. Symptom fixes are failure.

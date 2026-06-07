@@ -1,6 +1,6 @@
 ---
 name: permission-guard
-description: "Guard destructive operations — deleting files/dirs, modifying credentials, changing system configs, bulk refactors, database schema changes. Use when: delete, rm, remove, drop, truncate, credentials, config change, bulk edit."
+description: "Guard destructive operations — deleting files/dirs, modifying credentials, changing system configs, bulk refactors, database schema changes. Use whenever the user mentions delete, rm, remove, drop, truncate, credentials, config change, bulk edit, force push, or any irreversible operation. Trigger BEFORE executing the operation — confirm, then act."
 license: MIT
 allowed-tools: "Read, AskUserQuestion"
 ---
