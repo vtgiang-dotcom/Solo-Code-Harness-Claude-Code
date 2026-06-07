@@ -1,15 +1,70 @@
-# Solo-Code Harness — Claude Code Agent Layer
+# Solo-Code Harness — Claude Code + DeepSeek
 
-> **Mission:** The lightest, safest harness that transforms Claude Code into a disciplined Solo-Code Engineer.
-> <sub>1 developer + Claude Code + DeepSeek = a team. The harness is your engineering process.</sub>
+> **Mission:** Claude Code experience at DeepSeek price. A disciplined engineering harness that compensates for model gaps so you ship quality code at ~5-10x lower cost.
+> <sub>1 developer + Claude Code CLI + DeepSeek API + this harness = a team.</sub>
 
-<p align="center"><b>Claude Code</b> + <b>DeepSeek API</b> (flash + pro)</p>
+<p align="center">
+  <b>Claude Code</b> (harness, skills, MCP) ───▶ <b>DeepSeek API</b> (thinking, coding)<br>
+  <sub>Experience of Claude • Price of DeepSeek</sub>
+</p>
+
+---
+
+## Why This Exists
+
+**DeepSeek v4-pro is ~5-10x cheaper than Claude Opus, but weaker at:** instruction-following, hallucination resistance, and consistent code quality. The harness compensates for each gap.
+
+| DeepSeek Weakness | Harness Compensation |
+|---|---|
+| Higher hallucination rate — invents APIs, libraries, params | Anti-hallucination rules (A1-A5): verify before generating |
+| Unstable code quality — inconsistent patterns across calls | 10 structured skills with step-by-step protocols, not generic advice |
+| More AI-tell prose — "leverage", "paradigm shift", 40-word sentences | Prose quality rules (8-15) enforced in every output |
+| No built-in guardrails for destructive ops | 29 deny patterns in settings.json, guard.test.js 29/29 |
+| No commit discipline | Conventional commits enforced, `--no-verify` blocked |
+
+> **Key insight:** With cheaper models, rules must be *longer and more explicit* — not shorter. CLAUDE.md at 251 lines is intentional compensation, not bloat.
+
+---
+
+## Architecture
+
+```
+┌─────────────────┐     ┌──────────────────┐     ┌─────────────┐
+│  claudecode.ps1 │────▶│  Claude Code CLI  │────▶│  DeepSeek   │
+│  smart launcher │     │  + harness        │     │  API        │
+│                 │     │  + 10 skills      │     │  v4-pro     │
+│  model: auto    │     │  + 4 MCP servers  │     │  v4-flash   │
+└─────────────────┘     └──────────────────┘     └─────────────┘
+        │                        │                       │
+        │  ANTHROPIC_BASE_URL = api.deepseek.com/anthropic
+        │  ANTHROPIC_MODEL   = deepseek-v4-pro
+        │  ANTHROPIC_API_KEY = $DEEPSEEK_API_KEY
+        │
+        │  Claude Code thinks it talks to Anthropic.
+        │  DeepSeek responds in Anthropic-compatible format.
+        │  Cost: ~$0.3/M tokens vs Claude's ~$3/M.
+```
+
+### Smart Launcher — Auto Model Selection
+
+`claudecode.ps1` scans your prompt for 20 complexity keywords. Complex tasks get `v4-pro`; quick reads get `v4-flash`. No manual switching.
+
+```
+.\claudecode.ps1                  # pro default — best quality
+.\claudecode.ps1 -Model flash     # flash — read-only, simple Q&A
+.\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
+.\claudecode-pro.ps1              # pro shortcut
+```
+
+| Trigger keywords → pro | Everything else → flash |
+|---|---|
+| refactor, debug, bug, build, create, analyze, audit, architect, design, migrate, implement, security, optimize, fix, error, crash, restructure, review | Read files, explain code, search, ask questions |
 
 ---
 
 ## Philosophy
 
-**Solo development with AI is about discipline, not speed.** Without guardrails, AI agents cut corners. Solo-Code Harness enforces the process:
+**Solo development with AI is about discipline, not speed.** Without guardrails, AI agents cut corners. This harness enforces the process:
 
 | Principle | Without | With | Mechanism |
 |-----------|:---:|:---:|-----------|
@@ -18,7 +73,7 @@
 | Read before edit | Sometimes | **Always** | CLAUDE.md rulebook |
 | Scan secrets before commit | Rare | **Always** | security_scan.py |
 | Prose quality (no AI-tells) | Drifts | **Guided** | CLAUDE.md prose rules |
-| Model selection | Manual | **Auto** | claudecode.ps1 smart detect |
+| Cost-optimized model routing | Manual | **Auto** | claudecode.ps1 smart detect |
 
 ---
 

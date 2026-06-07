@@ -187,7 +187,7 @@ def main():
         results.append(
             run_check(
                 "Harness Eval",
-                [sys.executable, str(eval_script), str(project_path)],
+                [sys.executable, str(eval_script), "--min-score", "60"],
                 timeout=120,
             )
         )
