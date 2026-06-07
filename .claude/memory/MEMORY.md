@@ -7,6 +7,7 @@
 
 ## Rules
 - [[CLAUDE.md]] — Master rulebook with behavior rules, tool usage, security
+- [[harness-design-intent]] — Why rules are long and must not be shortened (DeepSeek compensation)
 
 ## Tech Stack
 - **Runtime**: Claude Code CLI + DeepSeek API (anthropic-compatible)

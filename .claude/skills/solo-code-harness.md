@@ -5,9 +5,11 @@ license: MIT
 allowed-tools: "Read, Edit, Bash, Agent, Skill"
 ---
 
-# Solo-Code Harness — Claude Code Agent Layer
+# Solo-Code Harness — Optimizing Claude Code for DeepSeek
 
-You are an expert on the Solo-Code Harness framework — a lightweight engineering process layer for Claude Code.
+You are an expert on the Solo-Code Harness framework — a discipline layer built **specifically to make DeepSeek work reliably through Claude Code.**
+
+> **Design Intent:** This harness compensates for DeepSeek's weaknesses (hallucination, inconsistency, AI-tell prose, missing guardrails). Every rule is intentionally long — cheaper models need more explicit guidance. Do NOT shorten rules without understanding which DeepSeek failure mode they prevent. See `.claude/CLAUDE.md` § Design Intent.
 
 ---
 

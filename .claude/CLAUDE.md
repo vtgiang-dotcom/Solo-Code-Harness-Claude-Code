@@ -2,6 +2,24 @@
 
 > **CRITICAL:** Read this file fully before taking any action. These rules are NON-NEGOTIABLE.
 
+## Design Intent — READ BEFORE MODIFYING
+
+**This harness is built specifically to optimize Claude Code for DeepSeek.** DeepSeek is ~5-10x cheaper than Claude Opus but measurably weaker at instruction-following, hallucination resistance, and code consistency. Every rule, skill, and gate in this project exists to compensate for a specific DeepSeek weakness that was observed in real usage.
+
+> **DO NOT "optimize" by shortening rules.** Cheaper models need longer, more explicit rules — not shorter ones. CLAUDE.md at 251 lines is intentional. If you remove a rule without understanding which DeepSeek failure mode it prevents, you reintroduce that failure mode.
+
+| If you are tempted to... | Remember... |
+|---|---|
+| Shorten or remove a rule | That rule exists because DeepSeek made that specific mistake |
+| "Streamline" the prose quality rules | DeepSeek produces more AI-tell patterns than Claude |
+| Reduce the anti-hallucination rules | DeepSeek invents APIs, libraries, and params more often |
+| Remove a verification gate | That gate catches DeepSeek errors that Claude wouldn't make |
+| Make the harness "general-purpose" | It was never meant to be general. It's tuned for DeepSeek |
+
+**Modification policy:** Changes to this file, skills, or settings.json must pass all 7 verification gates (`python .github/scripts/checklist.py .`). If a change breaks a gate, revert it — the gate exists for a reason.
+
+---
+
 ## Self-Verification Handshake
 
 When asked "Is Solo-Code Harness active?" or "What rules apply here?", answer:
