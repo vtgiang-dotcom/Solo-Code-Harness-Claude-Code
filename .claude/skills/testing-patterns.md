@@ -1,6 +1,6 @@
 ---
 name: test
-description: "Write tests, improve coverage, apply TDD. Use when adding features or fixing bugs."
+description: "Write tests, improve coverage, apply TDD. Use whenever the user adds features, fixes bugs, or mentions testing, test coverage, unit test, integration test, pytest, TDD, red-green-refactor. Also trigger on: add tests, write test, test this, coverage, verify behavior. Write tests BEFORE fixing bugs — reproduce the failure first."
 license: MIT
 allowed-tools: "Read, Write, Edit, Bash, Grep"
 ---

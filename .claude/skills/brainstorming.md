@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: "Explore ideas, design features, and validate approaches before implementation."
+description: "Explore ideas, design features, and validate approaches before implementation. Use whenever the user wants to design, plan, brainstorm, ideate, architect, or think through a feature. Trigger on: how should I, what's the best way, design for, architecture, brainstorm, explore options, evaluate tradeoffs, plan before code. Apply BEFORE implementation."
 license: MIT
 allowed-tools: "Read, Grep, Glob"
 ---

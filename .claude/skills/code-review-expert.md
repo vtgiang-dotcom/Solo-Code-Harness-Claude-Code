@@ -1,6 +1,6 @@
 ---
 name: code-review
-description: "Enterprise-grade code review — correctness, security, performance, test coverage. Use when reviewing PRs, diffs, or auditing code."
+description: "Enterprise-grade code review — correctness, security, performance, test coverage. Use this whenever reviewing PRs, diffs, auditing code, checking for vulnerabilities, evaluating code quality, or when the user asks to 'review', 'audit', 'check', 'inspect', or 'look at' any code changes. Also trigger when user mentions code quality, security review, or pull request feedback."
 license: MIT
 allowed-tools: "Read, Grep, Glob, Bash"
 ---

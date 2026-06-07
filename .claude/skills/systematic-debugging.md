@@ -1,6 +1,6 @@
 ---
 name: debug
-description: "Systematic debugging — reproduce, isolate, identify root cause, test the fix."
+description: "Systematic debugging — reproduce, isolate, identify root cause, test the fix. Use whenever the user reports a bug, error, crash, test failure, unexpected behavior, or anything 'not working'. Trigger on: bug, error, crash, fix, debug, broken, fails, stack trace, exception, investigate, why isn't, what's wrong. Apply before attempting ANY fix — no fixes without root cause first."
 license: MIT
 allowed-tools: "Read, Grep, Glob, Bash"
 ---

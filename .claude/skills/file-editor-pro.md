@@ -1,6 +1,6 @@
 ---
 name: file-editor
-description: "Edit files precisely — read first, use exact string replacement, preserve existing patterns."
+description: "Edit files precisely — read first, use exact string replacement, preserve existing patterns. Use whenever the user asks to edit, modify, change, update, fix, refactor, or rewrite any file. Trigger on: edit, change, update, modify, fix typo, refactor, rewrite, add function, rename. Never edit without reading the file first."
 license: MIT
 allowed-tools: "Read, Edit, Grep, Glob"
 ---

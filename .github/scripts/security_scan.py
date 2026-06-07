@@ -69,6 +69,7 @@ SKIP_DIRS = {
     "agents-main",                 # Reference project — not part of harness
     "awesome-deepseek-agent-main", # Reference project — DeepSeek integration guides
     "claude-code-main",            # Reference project — official Claude Code repo
+    "skills-main",                 # Reference project — official Anthropic skills
 }
 # Files git-ignored in this repo — skip to avoid flagging local dev secrets
 SKIP_NAMES: set[str] = {".env"}

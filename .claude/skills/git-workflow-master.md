@@ -1,6 +1,6 @@
 ---
 name: git-workflow
-description: "Git operations — conventional commits, safe branching, PR preparation."
+description: "Git operations — conventional commits, safe branching, PR preparation. Use whenever the user mentions git, commit, push, pull, merge, rebase, branch, PR, or pull request. Trigger on: commit, push, git, create PR, merge, branch, squash. Enforces conventional commit format and blocks destructive git commands."
 license: MIT
 allowed-tools: Bash
 ---
