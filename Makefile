@@ -4,7 +4,7 @@
 
 PY := python
 
-.PHONY: help generate garden test test-integration check
+.PHONY: help generate garden test test-integration check deploy
 
 help:
 	@echo "Solo-Code Harness — Claude Code Quality Gates"
@@ -14,6 +14,7 @@ help:
 	@echo "  make test               Run harness test suite"
 	@echo "  make test-integration   Run integration tests"
 	@echo "  make check              Full gate: ruff + garden + test + integration"
+	@echo "  make deploy TARGET=..   Deploy harness to another project"
 	@echo ""
 	@echo "Security:"
 	@echo "  make security-scan      Scan for hardcoded secrets"
@@ -48,3 +49,6 @@ security-scan:
 
 gitleaks:
 	gitleaks dir . --no-banner -c .gitleaks.toml
+
+deploy:
+	$(PY) tools/deploy.py $(TARGET)
