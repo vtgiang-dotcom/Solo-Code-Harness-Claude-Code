@@ -69,14 +69,23 @@ if ($Model -eq "auto") {
     }
 }
 
-$modelName  = if ($Model -eq "pro") { "deepseek-v4-pro" } else { "deepseek-v4-flash" }
+$modelName  = if ($Model -eq "pro") { "deepseek-v4-pro[1m]" } else { "deepseek-v4-flash[1m]" }
 $modelLabel = if ($Model -eq "pro") { "PRO" } else { "FLASH" }
 $detectNote = if ($autoDetected) { " (auto)" } else { "" }
 
 # --- Launch ---
 $env:ANTHROPIC_BASE_URL = "https://api.deepseek.com/anthropic"
 $env:ANTHROPIC_API_KEY = $deepseekApiKey
+$env:ANTHROPIC_AUTH_TOKEN = $deepseekApiKey          # Claude Code reads both
 $env:ANTHROPIC_MODEL = $modelName
+# Map Claude model names to DeepSeek (prevent routing errors)
+$env:ANTHROPIC_DEFAULT_OPUS_MODEL = "deepseek-v4-pro[1m]"
+$env:ANTHROPIC_DEFAULT_SONNET_MODEL = "deepseek-v4-pro[1m]"
+$env:ANTHROPIC_DEFAULT_HAIKU_MODEL = "deepseek-v4-flash[1m]"
+# Prevent Claude Code from phoning home to Anthropic
+$env:CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC = "1"
+# Max effort — DeepSeek needs explicit instruction
+$env:CLAUDE_CODE_EFFORT_LEVEL = "max"
 
 $logDir = Join-Path $PSScriptRoot ".claude"
 if (-not (Test-Path $logDir)) { New-Item -ItemType Directory -Force -Path $logDir | Out-Null }

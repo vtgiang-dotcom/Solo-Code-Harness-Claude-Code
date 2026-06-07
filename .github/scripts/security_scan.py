@@ -65,8 +65,9 @@ SKIP_DIRS = {
     ".mypy_cache",
     ".ruff_cache",
     ".pytest_cache",
-    "ECC-main",       # Reference project — not part of harness
-    "agents-main",    # Reference project — not part of harness
+    "ECC-main",                    # Reference project — not part of harness
+    "agents-main",                 # Reference project — not part of harness
+    "awesome-deepseek-agent-main", # Reference project — DeepSeek integration guides
 }
 # Files git-ignored in this repo — skip to avoid flagging local dev secrets
 SKIP_NAMES: set[str] = {".env"}
