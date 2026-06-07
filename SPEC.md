@@ -61,8 +61,8 @@ Phai ton tai: `.claude/` `.github/` `.vscode/`
 
 ## 9. Model Selection [SOFT]
 
-- `claudecode.ps1` — smart launcher, interactive model choice
-- `claudecode-pro.ps1` — pro shortcut
+- `solocode.ps1` — smart launcher, interactive model choice
+- `solocode-pro.ps1` — pro shortcut
 
 ## 10. Rang buoc khi tai tao
 

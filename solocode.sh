@@ -6,11 +6,11 @@
 # Auto-detect: -p "refactor X" scans prompt to pick model
 #
 # Usage:
-#   ./claudecode.sh                  # pro (default — best quality)
-#   ./claudecode.sh -Model flash      # force flash
-#   ./claudecode.sh -Model pro        # force pro
-#   ./claudecode.sh -p "refactor X"   # auto-detect from prompt text
-#   ./claudecode-pro.sh               # shortcut for -Model pro
+#   ./solocode.sh                  # pro (default — best quality)
+#   ./solocode.sh -Model flash      # force flash
+#   ./solocode.sh -Model pro        # force pro
+#   ./solocode.sh -p "refactor X"   # auto-detect from prompt text
+#   ./solocode-pro.sh               # shortcut for -Model pro
 
 set -euo pipefail
 
@@ -120,8 +120,8 @@ echo -e "\033[32m============================================================\03
 echo -e "\033[32m Claude Code + DeepSeek API\033[0m"
 echo -e "\033[36m Model : $MODEL_NAME ($MODEL_LABEL)$DETECT_NOTE\033[0m"
 echo -e "\033[90m------------------------------------------------------------\033[0m"
-echo -e "\033[90m Switch: ./claudecode.sh -Model flash  (save tokens)\033[0m"
-echo -e "\033[90m         ./claudecode.sh -p \"refactor\"  (auto-detect)\033[0m"
+echo -e "\033[90m Switch: ./solocode.sh -Model flash  (save tokens)\033[0m"
+echo -e "\033[90m         ./solocode.sh -p \"refactor\"  (auto-detect)\033[0m"
 echo -e "\033[32m============================================================\033[0m"
 echo ""
 

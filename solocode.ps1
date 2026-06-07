@@ -5,11 +5,11 @@
 # Auto-detect: -p "refactor X" scans prompt to pick model
 #
 # Usage:
-#   .\claudecode.ps1                  # pro (default — best quality)
-#   .\claudecode.ps1 -Model flash      # force flash
-#   .\claudecode.ps1 -Model pro        # force pro
-#   .\claudecode.ps1 -p "refactor X"   # auto-detect from prompt text
-#   .\claudecode-pro.ps1               # shortcut for -Model pro
+#   .\solocode.ps1                  # pro (default — best quality)
+#   .\solocode.ps1 -Model flash      # force flash
+#   .\solocode.ps1 -Model pro        # force pro
+#   .\solocode.ps1 -p "refactor X"   # auto-detect from prompt text
+#   .\solocode-pro.ps1               # shortcut for -Model pro
 
 param(
     [ValidateSet("auto", "flash", "pro")]
@@ -97,8 +97,8 @@ Write-Host "============================================================" -Foreg
 Write-Host " Claude Code + DeepSeek API" -ForegroundColor Green
 Write-Host " Model : $modelName ($modelLabel)$detectNote" -ForegroundColor Cyan
 Write-Host "------------------------------------------------------------" -ForegroundColor DarkGray
-Write-Host " Switch: .\claudecode.ps1 -Model flash  (tiet kiem token)" -ForegroundColor DarkGray
-Write-Host "         .\claudecode.ps1 -p ""refactor""  (auto-detect)" -ForegroundColor DarkGray
+Write-Host " Switch: .\solocode.ps1 -Model flash  (tiet kiem token)" -ForegroundColor DarkGray
+Write-Host "         .\solocode.ps1 -p ""refactor""  (auto-detect)" -ForegroundColor DarkGray
 Write-Host "============================================================" -ForegroundColor Green
 Write-Host ""
 

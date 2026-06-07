@@ -203,15 +203,15 @@ Run: `python .github/scripts/checklist.py .`
 ## Model Selection (DeepSeek)
 
 Uses DeepSeek models via Anthropic-compatible API at `https://api.deepseek.com/anthropic`.
-Launcher sets 8 env vars (see `claudecode.ps1`): `ANTHROPIC_BASE_URL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_MODEL` (with `[1m]` 1M-context suffix), `ANTHROPIC_DEFAULT_*_MODEL` (Opus/Sonnet/Haiku → DeepSeek), `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, `CLAUDE_CODE_EFFORT_LEVEL=max`.
+Launcher sets 8 env vars (see `solocode.ps1`): `ANTHROPIC_BASE_URL`, `ANTHROPIC_API_KEY`, `ANTHROPIC_AUTH_TOKEN`, `ANTHROPIC_MODEL` (with `[1m]` 1M-context suffix), `ANTHROPIC_DEFAULT_*_MODEL` (Opus/Sonnet/Haiku → DeepSeek), `CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1`, `CLAUDE_CODE_EFFORT_LEVEL=max`.
 
 ### Default: Pro (best quality, no questions)
 
 ```powershell
-.\claudecode.ps1                  # deepseek-v4-pro[1m] — default, best quality
-.\claudecode.ps1 -Model flash     # deepseek-v4-flash[1m] — cheap for simple tasks
-.\claudecode.ps1 -Model auto      # Auto-detect from prompt (-p flag)
-.\claudecode-pro.ps1              # Shortcut pro
+.\solocode.ps1                  # deepseek-v4-pro[1m] — default, best quality
+.\solocode.ps1 -Model flash     # deepseek-v4-flash[1m] — cheap for simple tasks
+.\solocode.ps1 -Model auto      # Auto-detect from prompt (-p flag)
+.\solocode-pro.ps1              # Shortcut pro
 ```
 
 **Pro is default** — DeepSeek v4-pro is still ~5-10x cheaper than Claude Opus, with best quality.
@@ -220,9 +220,9 @@ Launcher sets 8 env vars (see `claudecode.ps1`): `ANTHROPIC_BASE_URL`, `ANTHROPI
 
 | Usage | Model | When |
 |-----------|-------|---------|
-| `.\claudecode.ps1` | pro[1m] | Default — refactor, debug, analyze, code |
-| `.\claudecode.ps1 -Model flash` | flash[1m] | Read files, quick Q&A, search |
-| `.\claudecode.ps1 -p "refactor X"` | auto | Scans prompt → flash or pro |
+| `.\solocode.ps1` | pro[1m] | Default — refactor, debug, analyze, code |
+| `.\solocode.ps1 -Model flash` | flash[1m] | Read files, quick Q&A, search |
+| `.\solocode.ps1 -p "refactor X"` | auto | Scans prompt → flash or pro |
 
 ---
 

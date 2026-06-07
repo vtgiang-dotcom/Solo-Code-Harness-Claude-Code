@@ -101,7 +101,7 @@ def main() -> int:
 
     sessions = load_sessions()
     if not sessions:
-        print("No sessions logged yet. Run .\\claudecode.ps1 first.")
+        print("No sessions logged yet. Run .\\solocode.ps1 first.")
         print("Tip: use /status inside Claude Code for exact token counts.")
         return 0
 

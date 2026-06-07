@@ -23,10 +23,10 @@ DEPLOY = [
     ".claude/",                         # CLAUDE.md, settings.json, skills/, memory/
     ".mcp.json",                        # MCP server config
     # ── Launcher scripts ──
-    "claudecode.ps1",                   # Smart launcher — Windows PowerShell
-    "claudecode-pro.ps1",               # Pro shortcut — Windows
-    "claudecode.sh",                    # Smart launcher — Linux/Mac bash
-    "claudecode-pro.sh",                # Pro shortcut — Linux/Mac
+    "solocode.ps1",                     # Smart launcher — Windows PowerShell
+    "solocode-pro.ps1",                 # Pro shortcut — Windows
+    "solocode.sh",                      # Smart launcher — Linux/Mac bash
+    "solocode-pro.sh",                  # Pro shortcut — Linux/Mac
     # ── Security & quality gates ──
     ".github/scripts/security_scan.py", # Secret scanner
     ".github/scripts/checklist.py",     # Master validation checklist

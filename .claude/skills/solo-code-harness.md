@@ -22,7 +22,7 @@ You are an expert on the Solo-Code Harness framework — a discipline layer buil
 | Skills | `.claude/skills/` | 10 context-triggered skills |
 | Memory | `.claude/memory/` | Cross-session persistent memory |
 | MCP | `.mcp.json` | sequential-thinking, memory, context7, playwright |
-| Launcher | `claudecode.ps1` | Smart model selection (DeepSeek flash/pro) |
+| Launcher | `solocode.ps1` | Smart model selection (DeepSeek flash/pro) |
 
 ---
 
@@ -37,8 +37,8 @@ Copy these files to the target project:
 .github/hooks/scripts/      # guard.js, guard.test.js
 .gitleaks.toml              # Secret scanner config
 .ruff.toml                  # Python linter config
-claudecode.ps1              # Smart launcher
-claudecode-pro.ps1          # Pro shortcut
+solocode.ps1              # Smart launcher
+solocode-pro.ps1          # Pro shortcut
 ```
 
 Claude Code auto-discovers `.claude/CLAUDE.md` and `.claude/settings.json` at repo root.

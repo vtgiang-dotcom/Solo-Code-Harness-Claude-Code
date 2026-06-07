@@ -30,7 +30,7 @@
 
 ```
 ┌──────────────────┐     ┌──────────────────────┐     ┌─────────────┐
-│  claudecode.ps1  │────▶│  Claude Code CLI      │────▶│  DeepSeek   │
+│  solocode.ps1    │────▶│  Claude Code CLI      │────▶│  DeepSeek   │
 │  Smart launcher  │     │  + CLAUDE.md (rules)  │     │  API        │
 │  Auto model pick │     │  + 10 skills          │     │  v4-pro     │
 │  flash vs pro    │     │  + 4 MCP servers      │     │  v4-flash   │
@@ -53,13 +53,13 @@
 
 ### Smart Launcher — Auto Model Selection
 
-`claudecode.ps1` scans your prompt against 20 complexity keywords. Complex tasks get `v4-pro`; file reads and quick questions get `v4-flash`. No manual switching.
+`solocode.ps1` scans your prompt against 20 complexity keywords. Complex tasks get `v4-pro`; file reads and quick questions get `v4-flash`. No manual switching.
 
 ```
-.\claudecode.ps1                  # pro default — best quality
-.\claudecode.ps1 -Model flash     # flash — read files, simple Q&A
-.\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
-.\claudecode-pro.ps1              # pro shortcut
+.\solocode.ps1                  # pro default — best quality
+.\solocode.ps1 -Model flash     # flash — read files, simple Q&A
+.\solocode.ps1 -p "refactor X"  # auto-detect from prompt text
+.\solocode-pro.ps1              # pro shortcut
 ```
 
 | Keywords → pro | Everything else → flash |
@@ -79,7 +79,7 @@
 | Read file before editing | Sometimes | **Always** | CLAUDE.md rulebook |
 | Scan secrets before commit | Rarely | **Always** | security_scan.py |
 | No AI-tell prose | Drifts | **Controlled** | CLAUDE.md prose rules |
-| Task-appropriate model | Manual | **Automatic** | claudecode.ps1 smart detect |
+| Task-appropriate model | Manual | **Automatic** | solocode.ps1 smart detect |
 | Cache-optimized prompts | No | **Designed-in** | Stable CLAUDE.md = max cache hits |
 
 > **Cache economics:** DeepSeek charges ~$0.003/M tokens for cache hits (vs $0.435/M for uncached input). The harness's long, stable system prompt is a feature, not a bug — every cached token saves ~99% in input cost. A 251-line CLAUDE.md that hits cache costs less than a 50-line one that misses.
@@ -104,7 +104,7 @@ git add -A && git commit -m "init: Solo-Code Harness + DeepSeek"
 echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
 
 # Ready
-.\claudecode.ps1
+.\solocode.ps1
 ```
 
 ### Existing project (add harness to current codebase)
@@ -113,7 +113,7 @@ echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
 # Clone harness to temp, copy harness layer only
 git clone https://github.com/vtgiang-dotcom/Solo-Code-Harness-Claude-Code.git /tmp/harness
 cp -r /tmp/harness/.claude /tmp/harness/.mcp.json \
-      /tmp/harness/claudecode*.ps1 /tmp/harness/.github \
+      /tmp/harness/solocode* /tmp/harness/.github \
       /tmp/harness/.ruff.toml /tmp/harness/Makefile .
 rm -rf /tmp/harness
 echo "DEEPSEEK_API_KEY=sk-your-key-here" > .env
@@ -140,17 +140,17 @@ python tools/setup-global-config.py
 
 ```bash
 # Windows (PowerShell)
-.\claudecode.ps1                  # pro[1m] default — best quality
-.\claudecode.ps1 -Model flash     # flash[1m] — read files, simple Q&A
-.\claudecode.ps1 -p "refactor X"  # auto-detect from prompt text
-.\claudecode-pro.ps1              # pro shortcut
+.\solocode.ps1                  # pro[1m] default — best quality
+.\solocode.ps1 -Model flash     # flash[1m] — read files, simple Q&A
+.\solocode.ps1 -p "refactor X"  # auto-detect from prompt text
+.\solocode-pro.ps1              # pro shortcut
 
 # Linux / Mac (bash)
-chmod +x claudecode.sh claudecode-pro.sh
-./claudecode.sh                   # pro[1m] default — best quality
-./claudecode.sh -Model flash      # flash[1m] — read files, simple Q&A
-./claudecode.sh -p "refactor X"   # auto-detect from prompt text
-./claudecode-pro.sh               # pro shortcut
+chmod +x solocode.sh solocode-pro.sh
+./solocode.sh                   # pro[1m] default — best quality
+./solocode.sh -Model flash      # flash[1m] — read files, simple Q&A
+./solocode.sh -p "refactor X"   # auto-detect from prompt text
+./solocode-pro.sh               # pro shortcut
 ```
 
 ### What gets deployed
@@ -159,7 +159,7 @@ chmod +x claudecode.sh claudecode-pro.sh
 |--------|-----------|
 | `.claude/` (rules, skills, memory) | `tools/` (harness self-tests) |
 | `.mcp.json` (4 MCP servers) | `README.md` |
-| `claudecode.ps1` (smart launcher) | `.git/` |
+| `solocode.ps1` (smart launcher) | `.git/` |
 | `.github/` (security gates) | `.env` (create your own) |
 | `.ruff.toml`, `Makefile` | |
 
@@ -184,8 +184,10 @@ tools/                      # Quality gates
   test_integration.py       # 46 integration tests
   eval_harness.py           # Behavioral scoring (100/100)
 
-claudecode.ps1              # Smart launcher (flash/pro auto-detect)
-claudecode-pro.ps1          # Pro shortcut
+solocode.ps1                # Smart launcher — Windows
+solocode-pro.ps1            # Pro shortcut — Windows
+solocode.sh                 # Smart launcher — Linux/Mac
+solocode-pro.sh             # Pro shortcut — Linux/Mac
 .mcp.json                   # 4 MCP servers
 ```
 
