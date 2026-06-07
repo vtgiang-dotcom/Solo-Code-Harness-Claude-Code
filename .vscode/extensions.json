@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "ms-python.python",
+    "ms-python.black-formatter",
+    "eamodio.gitlens",
+    "yzhang.markdown-all-in-one",
+    "redhat.vscode-yaml"
+  ]
+}

@@ -1,0 +1,4 @@
+{
+  "comment": "MCP servers for Claude Code — primary config is in .mcp.json at project root",
+  "servers": {}
+}

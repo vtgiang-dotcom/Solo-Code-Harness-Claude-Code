@@ -1,0 +1,21 @@
+# Ruff configuration for Solo-Code-Harness
+extend-exclude = [
+    "ECC-main",
+    "agents-main",
+    "awesome-agent-harness-main",
+    "awesome-harness-engineering-main",
+    ".venv",
+]
+
+# Target Python version
+target-version = "py310"
+
+[lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM", "C4"]
+
+[lint.per-file-ignores]
+"scripts/*" = ["T201"]  # Allow print() in scripts
+"tools/garden.py" = ["E501"]  # Long lines in drift detection output formatting
+"tools/test_harness.py" = ["E501"]  # Long lines in test assertions
+"tools/test_integration.py" = ["E501"]  # Long lines in test assertions
+"tools/eval_harness.py" = ["E501"]  # Long test data strings + formatted output

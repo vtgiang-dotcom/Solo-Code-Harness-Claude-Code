@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+# Solo-Code Harness — Pre-Commit Hook (self-hosted)
+#
+# Runs the full quality gate before every commit.
+# Install: ln -s ../../.github/hooks/pre-commit .git/hooks/pre-commit
+# Or copy this file to .git/hooks/pre-commit
+#
+# This hook uses the harness's own quality tools to validate itself.
+# Dogfooding: the harness validates the harness.
+# 5 steps: security → lint → garden → unit tests → integration tests
+
+set -euo pipefail
+
+echo "=== Solo-Code Harness Pre-Commit Gate ==="
+echo ""
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+failures=0
+
+# 1. Security scan (fast, critical)
+echo "[1/5] Security scan..."
+if python .github/scripts/security_scan.py . 2>&1 | grep -q "issue"; then
+    echo -e "${RED}  FAIL${NC}: secrets or unsafe patterns detected"
+    ((failures++))
+else
+    echo -e "${GREEN}  PASS${NC}"
+fi
+
+# 2. Ruff lint
+echo "[2/5] Ruff lint..."
+if ruff check . 2>&1; then
+    echo -e "${GREEN}  PASS${NC}"
+else
+    echo -e "${RED}  FAIL${NC}"
+    ((failures++))
+fi
+
+# 3. Garden drift detection
+echo "[3/5] Garden (drift detection)..."
+if python tools/garden.py 2>&1; then
+    echo -e "${GREEN}  PASS${NC}"
+else
+    echo -e "${YELLOW}  WARN${NC} (non-blocking)"
+fi
+
+# 4. Harness tests
+echo "[4/5] Harness tests..."
+if python -m pytest tools/test_harness.py -q 2>&1; then
+    echo -e "${GREEN}  PASS${NC}"
+else
+    echo -e "${RED}  FAIL${NC}"
+    ((failures++))
+fi
+
+# 5. Integration tests
+echo "[5/5] Integration tests..."
+if python tools/test_integration.py 2>&1; then
+    echo -e "${GREEN}  PASS${NC}"
+else
+    echo -e "${RED}  FAIL${NC}"
+    ((failures++))
+fi
+
+echo ""
+if [ $failures -eq 0 ]; then
+    echo -e "${GREEN}All gates passed. Proceeding with commit.${NC}"
+    exit 0
+else
+    echo -e "${RED}${failures} gate(s) failed. Fix before committing.${NC}"
+    echo "Run 'make check' for details."
+    exit 1
+fi

@@ -1,0 +1,56 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Security Scan",
+      "type": "shell",
+      "command": "python",
+      "args": [".github/scripts/security_scan.py", "."],
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Checklist (Core)",
+      "type": "shell",
+      "command": "python",
+      "args": [".github/scripts/checklist.py", "."],
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Checklist (Full)",
+      "type": "shell",
+      "command": "python",
+      "args": [".github/scripts/checklist.py", ".", "--url", "http://localhost:3000"],
+      "group": "test",
+      "presentation": { "reveal": "always", "panel": "new" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Install Dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "group": "build",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Tests",
+      "type": "shell",
+      "command": "npm test",
+      "group": "test",
+      "presentation": { "reveal": "always" },
+      "problemMatcher": "$tsc"
+    },
+    {
+      "label": "Build",
+      "type": "shell",
+      "command": "npm run build",
+      "group": { "kind": "build", "isDefault": true },
+      "presentation": { "reveal": "always" },
+      "problemMatcher": "$tsc"
+    }
+  ]
+}
